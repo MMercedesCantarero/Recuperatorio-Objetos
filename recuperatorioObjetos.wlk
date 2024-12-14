@@ -1,5 +1,3 @@
-
-
 class Mago {
   const nombre = ""
   var poderInnato = 0
@@ -8,7 +6,6 @@ class Mago {
   var categoria = null
   var objetosMagicos = []
 
- 
   method esVencidoPor(poderAtacante) {
     return categoria.esVencidoPor(poderAtacante, resistenciaMagica)
   }
@@ -20,7 +17,7 @@ class Mago {
     var poderObjetos = objetosMagicos.sum({ obj => obj.poder(self) })
     return poderObjetos * poderInnato
   }
-method desafiar(oponente) {
+  method desafiar(oponente) {
   if (oponente.esVencidoPor(poderTotal())) {
     energiaMagica = energiaMagica + oponente.perderEnergia(self)
   }
@@ -37,7 +34,6 @@ object categoriaAprendiz {
     return mago.energiaMagica / 2
   }
 }
-
 
 object categoriaVeterano {
   method esVencidoPor(poderAtacante, resistenciaMagica) {
@@ -95,16 +91,18 @@ class OjotaMagica inherits ObjetoMagico {
   }
 }
 
-mago1 = Mago new("pepito", 8, 1000, 15, CategoriaVeterano)
-mago2 = Mago new("manolo", 9, 800, 20, CategoriaVeterano)
+class Gremio {
+  var miembros = []
 
-mago1.objetosMagicos.add(Varita new(50))
-mago1.objetosMagicos.add(TunicaEpica new(30))
-mago1.objetosMagicos.add(Amuleto new())
-mago1.objetosMagicos.add(OjotaMagica new())
+  method poderTotal() {
+    return miembros.sum({ miembro => miembro.poderTotal() })
+  }
+  method resistenciaMagicaTotal() {
+    return miembros.sum({ miembro => miembro.resistenciaMagica() }) + lider().resistenciaMagica()
+  }
+  method energiaMagicaTotal() {
+    return miembros.sum({ miembro => miembro.energiaMagica() })
+  }
+  method lider() {}
 
-mago2.objetosMagicos.add(Varita new(70))
-mago2.objetosMagicos.add(TunicaComun new())
-
-// El mago1 desafía al mago2
-mago1.desafiar(mago2)
+}
